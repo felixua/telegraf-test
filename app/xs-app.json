@@ -1,0 +1,17 @@
+{
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/telegraf-test/(.*)$",
+      "authenticationType": "xsuaa",
+      "destination": "srv"
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "$1",
+      "authenticationType": "xsuaa",
+      "destination": "srv",
+      "csrfProtection": true
+    }
+  ]
+}

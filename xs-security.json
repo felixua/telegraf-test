@@ -1,0 +1,30 @@
+{
+  "xsappname": "telegraf_test",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "uaa.user",
+      "description": "UAA"
+    }
+  ],
+
+  "role-templates": [
+    {
+      "name": "Token_Exchange",
+      "description": "UAA Token Exchange",
+      "scope-references": [
+          "uaa.user"
+      ]
+  }
+  ],
+
+  "role-collections": [],
+  
+  "oauth2-configuration": {
+    "token-validity": 3600,
+    "redirect-uris": [
+      "https://*.applicationstudio.cloud.sap/**",
+      "https://*.cfapps.us10-001.hana.ondemand.com/**"
+    ]
+  }
+}

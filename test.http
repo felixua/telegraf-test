@@ -1,0 +1,13 @@
+### Try POST Contact entity
+POST http://localhost:4004/odata/v4/telegraf-test/Contact
+Content-Type: application/json
+
+
+{
+    "name": "Anton",
+    "phone": "541161825730",
+    "chatid": ""
+}
+
+### GET Contact entity
+GET http://localhost:4004/odata/v4/telegraf-test/Contact

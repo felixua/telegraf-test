@@ -1,0 +1,38 @@
+{
+  "name": "telegraf_test",
+  "version": "1.0.0",
+  "description": "Telegraf test project",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": "^18.14.2",
+    "npm": "^9.5.0"
+  },
+  "dependencies": {
+    "@sap/cds": "^7",
+    "@sap/xssec": "^3",
+    "express": "^4",
+    "passport": "^0.6.0",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1.2.1",
+    "@sap/cds-dk": "^7"
+  },
+  "scripts": {
+    "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        },
+        "schema_evolution": "auto"
+      },
+      "auth": "xsuaa"
+    }
+  }
+}

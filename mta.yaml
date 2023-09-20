@@ -1,0 +1,64 @@
+_schema-version: '3.1'
+ID: telegraf_test
+version: 1.0.0
+description: "Telegraf test project"
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx cds build --production
+        - cp -r db.sqlite gen/srv
+modules:
+  - name: telegraf_test-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: telegraf_test-auth
+      - name: telegraf_test-connectivity-service
+
+  - name: telegraf_test
+    type: approuter.nodejs
+    path: app # from cds.env.folders. Consider also cds.env.build.target -> gen/app
+    build-parameters:
+      ignore:
+        - default-*.json
+        - .env
+        - "*node_modules*"
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: telegraf_test-auth
+      - name: telegraf_test-connectivity-service
+
+resources:
+  - name: telegraf_test-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: telegraf_test-${org}-${space}
+        tenant-mode: dedicated
+  - name: telegraf_test-connectivity-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+       service-plan: lite
+       service: connectivity      
